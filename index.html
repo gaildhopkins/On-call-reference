@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pharmacy On-Call Reference Card</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      background: #f4f6f9;
+      color: #1a1a2e;
+      padding: 12px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%);
+      color: #fff;
+      padding: 14px 20px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header-left h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      line-height: 1.2;
+    }
+    .header-left p {
+      font-size: 10px;
+      opacity: 0.85;
+      margin-top: 3px;
+    }
+    .header-right {
+      font-size: 10px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 6px 10px;
+      min-width: 220px;
+      line-height: 1.6;
+    }
+    .header-right strong { display: block; font-size: 10.5px; margin-bottom: 2px; }
+    .alert-box {
+      background: #c0392b;
+      color: #fff;
+      text-align: center;
+      font-weight: 700;
+      font-size: 10.5px;
+      padding: 5px 14px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      padding: 10px;
+      background: #f4f6f9;
+    }
+
+    /* ── SECTION CARDS ── */
+    .section {
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #dce3ed;
+      margin: 4px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .section-header {
+      padding: 6px 9px 4px;
+      font-weight: 700;
+      font-size: 10.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      line-height: 1.2;
+    }
+    .section-header .icon { font-size: 13px; flex-shrink: 0; }
+    .section-body {
+      padding: 6px 9px 8px;
+      flex: 1;
+      line-height: 1.55;
+      font-size: 10px;
+    }
+    .section-body ul {
+      padding-left: 0;
+      list-style: none;
+    }
+    .section-body ul li::before {
+      content: "›";
+      color: #888;
+      margin-right: 4px;
+      font-weight: bold;
+    }
+    .section-body li { margin-bottom: 1px; }
+
+    /* ── COLOUR THEMES ── */
+    .theme-red    .section-header { background: #c0392b; }
+    .theme-orange .section-header { background: #d35400; }
+    .theme-teal   .section-header { background: #16817a; }
+    .theme-blue   .section-header { background: #1a5276; }
+    .theme-navy   .section-header { background: #1a3a5c; }
+    .theme-purple .section-header { background: #6c3483; }
+    .theme-green  .section-header { background: #1e6b3c; }
+    .theme-slate  .section-header { background: #34495e; }
+
+    /* ── LINKS ── */
+    a { color: #1a5276; text-decoration: underline; font-weight: 600; }
+    a:hover { color: #c0392b; }
+
+    .ref-link {
+      display: inline-block;
+      background: #eaf3fb;
+      border: 1px solid #aed6f1;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 9.5px;
+      margin-top: 3px;
+      color: #1a5276;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .ref-link:hover { background: #1a5276; color: #fff; border-color: #1a5276; }
+
+    /* ── POISON CONTROL BADGE ── */
+    .pc-badge {
+      background: #f9ebea;
+      border: 1px solid #e74c3c;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 9.5px;
+      color: #922b21;
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    /* ── ABBREV FOOTER ── */
+    .footer {
+      background: #1a3a5c;
+      color: #d5e8f6;
+      padding: 7px 14px;
+      font-size: 9.5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 18px;
+      line-height: 1.6;
+    }
+    .footer span { white-space: nowrap; }
+    .footer-note {
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin-top: 4px;
+      padding-top: 4px;
+      font-size: 9px;
+      opacity: 0.75;
+    }
+
+    /* ── CATEGORY LABEL ── */
+    .cat-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 2px;
+      color: #555;
+    }
+
+    /* ── WIDE CARD ── */
+    .wide { grid-column: span 2; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>🏥 Pharmacy On-Call Reference Card — Medical Emergencies</h1>
+      <p>High-level overview · Not a substitute for full clinical review · Includes links to source guidelines</p>
+    </div>
+    <div class="header-right">
+      <strong>📞 Key Contacts</strong>
+      Poison Control: <strong>1-800-268-9017</strong> (ON)<br>
+      Always consult Poison Control for any antidote use<br>
+      Cardiology, PICU, Toxicology as indicated
+    </div>
+  </div>
+  <div class="alert-box">
+    ⚠ Any overdose requiring antidote → ALWAYS consult Poison Control first and follow their direction
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+
+    <!-- ══ OVERDOSES ══ -->
+
+    <!-- CCB / BB Overdose -->
+    <div class="section theme-red">
+      <div class="section-header"><span class="icon">💊</span>CCB / BB Overdose</div>
+      <div class="section-body">
+        <div class="cat-label">Key Agents</div>
+        <ul>
+          <li>High-dose insulin (HDI): 1 unit/kg bolus → infusion</li>
+          <li>Calcium gluconate or chloride IV</li>
+          <li>Atropine (bradycardia)</li>
+          <li>Vasopressors (norepinephrine, vasopressin)</li>
+          <li>Lipid emulsion therapy (ILE)</li>
+          <li>Consider glucagon (BB OD)</li>
+          <li>ECMO / IABP for refractory shock</li>
+        </ul>
+        <div class="pc-badge">☎ Poison Control</div><br>
+        <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/31119725/" target="_blank">ToxSE Guidelines</a>
+        <a class="ref-link" href="https://www.lipidrescue.org/" target="_blank">Lipid Rescue</a>
+      </div>
+    </div>
+
+    <!-- Acetaminophen OD -->
+    <div class="section theme-red">
+      <div class="section-header"><span class="icon">💊</span>Acetaminophen Overdose</div>
+      <div class="section-body">
+        <div class="cat-label">NAC Protocol</div>
+        <ul>
+          <li>IV NAC (Acetadote®): 150 mg/kg over 1 h → 12.5 mg/kg/h × 4 h → 6.25 mg/kg/h × 16 h</li>
+          <li>Plot on Rumack-Matthew nomogram</li>
+          <li>Stop when: APAP undetectable + AST/ALT improving + no prognostic markers</li>
+          <li>Extend if: elevated aminotransferases, elevated INR, persistent APAP</li>
+        </ul>
+        <div class="pc-badge">☎ Poison Control</div><br>
+        <a class="ref-link" href="https://link.springer.com/article/10.1007/s13181-016-0542-z" target="_blank">ACMT IV NAC Statement</a>
+      </div>
+    </div>
+
+    <!-- Opioid OD -->
+    <div class="section theme-red">
+      <div class="section-header"><span class="icon">💊</span>Opioid Overdose</div>
+      <div class="section-body">
+        <ul>
+          <li>Naloxone 0.4–2 mg IV/IM/IN; repeat q2–3 min PRN</li>
+          <li>Infusion: 2/3 of effective bolus/hr if repeated dosing needed</li>
+          <li>Airway support, O₂, suction</li>
+          <li>Monitor for re-sedation (extended-release opioids)</li>
+          <li>Avoid over-reversal → precipitates withdrawal &amp; agitation</li>
+        </ul>
+        <div class="pc-badge">☎ Poison Control</div><br>
+        <a class="ref-link" href="https://www.who.int/publications/i/item/9789241548816" target="_blank">WHO Opioid OD Guidance</a>
+      </div>
+    </div>
+
+    <!-- Valproic Acid OD -->
+    <div class="section theme-red">
+      <div class="section-header"><span class="icon">💊</span>Valproic Acid Overdose</div>
+      <div class="section-body">
+        <ul>
+          <li>Supportive care (airway, hemodynamics)</li>
+          <li>L-Carnitine 100 mg/kg IV (max 3 g) q8h if encephalopathy / liver toxicity</li>
+          <li>Activated charcoal if early and airway intact</li>
+          <li>Hemodialysis for massive OD or hemodynamic instability</li>
+          <li>Monitor ammonia, LFTs, coags</li>
+        </ul>
+        <div class="pc-badge">☎ Poison Control</div><br>
+        <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/24357876/" target="_blank">L-Carnitine Evidence</a>
+      </div>
+    </div>
+
+    <!-- Toxic Alcohol Poisoning -->
+    <div class="section theme-orange">
+      <div class="section-header"><span class="icon">🍶</span>Toxic Alcohol Poisoning</div>
+      <div class="section-body">
+        <div class="cat-label">Methanol / Ethylene Glycol</div>
+        <ul>
+          <li>Fomepizole (4-MP): 15 mg/kg IV load → 10 mg/kg q12h × 4 doses → 15 mg/kg q12h</li>
+          <li>Ethanol (alternative): target level 100–150 mg/dL</li>
+          <li>Folate (methanol) / Pyridoxine + Thiamine (ethylene glycol)</li>
+          <li>Hemodialysis: severe acidosis, organ failure, high levels</li>
+          <li>Correct metabolic acidosis</li>
+        </ul>
+        <div class="pc-badge">☎ Poison Control</div><br>
+        <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/19916931/" target="_blank">EXTRIP Toxic Alcohol</a>
+      </div>
+    </div>
+
+    <!-- Sodium Channel Blocker OD -->
+    <div class="section theme-orange">
+      <div class="section-header"><span class="icon">⚡</span>Sodium Channel Blocker OD</div>
+      <div class="section-body">
+        <div class="cat-label">e.g. TCAs, cocaine, flecainide</div>
+        <ul>
+          <li>Sodium bicarbonate 1–2 mEq/kg IV bolus → infusion (target pH 7.45–7.55)</li>
+          <li>Goal: narrow QRS, reverse hypotension</li>
+          <li>Avoid flumazenil if TCA suspected</li>
+          <li>Lipid emulsion for severe refractory toxicity</li>
+          <li>Manage seizures with benzodiazepines</li>
+        </ul>
+        <div class="pc-badge">☎ Poison Control</div><br>
+        <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/9729037/" target="_blank">Bicarb in Na-channel OD</a>
+      </div>
+    </div>
+
+    <!-- ══ METABOLIC ══ -->
+
+    <!-- Hyponatremia -->
+    <div class="section theme-teal">
+      <div class="section-header"><span class="icon">🧂</span>Hyponatremia</div>
+      <div class="section-body">
+        <ul>
+          <li>Severe symptomatic: 3% NaCl 150 mL IV over 20 min (repeat × 2 PRN)</li>
+          <li>Target: raise Na⁺ by 5 mmol/L in first hour</li>
+          <li>Max correction: ≤8–10 mmol/L per 24h (risk of osmotic demyelination)</li>
+          <li>Identify cause: SIADH, hypovolemia, hypervolemia</li>
+          <li>Tolvaptan / vaptans: SIADH (specialist use)</li>
+        </ul>
+        <a class="ref-link" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4042117/" target="_blank">Expert Panel Recs (2014)</a>
+      </div>
+    </div>
+
+    <!-- Hypercalcemia -->
+    <div class="section theme-teal">
+      <div class="section-header"><span class="icon">🦴</span>Hypercalcemia of Malignancy</div>
+      <div class="section-body">
+        <ul>
+          <li>IV fluids: 0.9% NaCl 200–500 mL/hr (volume expansion)</li>
+          <li>Zoledronic acid 4 mg IV over 15 min (preferred bisphosphonate)</li>
+          <li>Denosumab 120 mg SC for bisphosphonate-refractory or CKD</li>
+          <li>Calcitonin 4–8 units/kg q6–12h (rapid onset, short-lived)</li>
+          <li>Dialysis for severe/refractory with renal failure</li>
+        </ul>
+        <a class="ref-link" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6487705/" target="_blank">Hypercalcemia of Malignancy Review</a>
+      </div>
+    </div>
+
+    <!-- Hyperkalemia -->
+    <div class="section theme-teal">
+      <div class="section-header"><span class="icon">⚗️</span>Hyperkalemia</div>
+      <div class="section-body">
+        <ul>
+          <li>Calcium gluconate 1 g IV (membrane stabilization — give first if ECG changes)</li>
+          <li>Insulin 10 units + Dextrose 50 g IV (shift K⁺ intracellular)</li>
+          <li>Salbutamol 10–20 mg nebulized (additive shift)</li>
+          <li>Sodium bicarbonate (if acidosis)</li>
+          <li>Kayexalate / patiromer / sodium zirconium cyclosilicate (elimination)</li>
+          <li>Dialysis if refractory or anuric</li>
+        </ul>
+        <a class="ref-link" href="https://www.nejm.org/doi/full/10.1056/NEJMra2025080" target="_blank">NEJM Hyperkalemia Review</a>
+      </div>
+    </div>
+
+    <!-- Hyperthyroidism / Thyroid Storm -->
+    <div class="section theme-teal">
+      <div class="section-header"><span class="icon">🦋</span>Hyperthyroidism / Thyroid Storm</div>
+      <div class="section-body">
+        <ul>
+          <li>PTU 500–1000 mg load → 250 mg q4h (preferred in storm; blocks T4→T3)</li>
+          <li>Methimazole 60–80 mg/day (alternative)</li>
+          <li>Iodine (Lugol's) 5–10 drops TID — give ≥1h after PTU</li>
+          <li>Propranolol 60–80 mg q4h PO or IV (rate/symptom control)</li>
+          <li>Dexamethasone 2 mg q6h (blocks T4→T3 conversion)</li>
+          <li>ICU admission for storm (Burch-Wartofsky score ≥45)</li>
+        </ul>
+        <a class="ref-link" href="https://www.thyroid.org/professionals/ata-professional-guidelines/" target="_blank">ATA Guidelines</a>
+      </div>
+    </div>
+
+    <!-- Myxedema Coma -->
+    <div class="section theme-teal">
+      <div class="section-header"><span class="icon">🌡️</span>Myxedema Coma</div>
+      <div class="section-body">
+        <ul>
+          <li>Levothyroxine (T4): 200–400 mcg IV load → 50–100 mcg/day IV</li>
+          <li>Liothyronine (T3): 5–20 mcg IV q8h (add if severe or no response)</li>
+          <li>Hydrocortisone 100 mg IV q8h (until adrenal insufficiency excluded)</li>
+          <li>Passive rewarming, supportive care, ICU</li>
+          <li>Avoid rapid correction → can precipitate arrhythmias</li>
+        </ul>
+        <a class="ref-link" href="https://www.thyroid.org/professionals/ata-professional-guidelines/" target="_blank">ATA Guidelines</a>
+      </div>
+    </div>
+
+    <!-- DKA / HHS -->
+    <div class="section theme-blue">
+      <div class="section-header"><span class="icon">🩸</span>DKA / HHS (Adult)</div>
+      <div class="section-body">
+        <ul>
+          <li>IV fluids: 0.9% NaCl 1 L/hr × 1–2 h, then adjust to clinical status</li>
+          <li>Insulin: 0.1 units/kg/h infusion (hold until K⁺ ≥3.5 mmol/L)</li>
+          <li>Potassium: replace aggressively (target 4–5 mmol/L)</li>
+          <li>Glucose: add D5W when BG &lt;14 mmol/L to continue insulin</li>
+          <li>DKA resolved: pH &gt;7.30, HCO₃ &gt;15, anion gap ≤12</li>
+          <li>Transition to SC insulin 30 min before stopping infusion</li>
+        </ul>
+        <a class="ref-link" href="https://www.diabetes.ca/guidelines/summary" target="_blank">Diabetes Canada CPG</a>
+        <a class="ref-link" href="https://www.bcchildrens.ca/endocrinology-diabetes-site/documents/dkaprotocol.pdf" target="_blank">DKA Medical Protocol</a>
+      </div>
+    </div>
+
+    <!-- Paediatric DKA -->
+    <div class="section theme-blue">
+      <div class="section-header"><span class="icon">👶</span>Paediatric DKA</div>
+      <div class="section-body">
+        <ul>
+          <li>Resuscitation bolus: 0.9% NaCl 20 mL/kg over 30 min (repeat if needed)</li>
+          <li>Rehydration: even correction over 36h per weight-based rate</li>
+          <li>Insulin: 0.05–0.1 units/kg/hr — NOT before K⁺ ≥3.5 mmol/L</li>
+          <li>Cerebral edema signs → 3% NaCl 5 mL/kg IV over 10 min / mannitol 0.5–1 g/kg</li>
+          <li>NO IV insulin bolus in children</li>
+        </ul>
+        <a class="ref-link" href="https://trekk.ca/problems/dka/tools" target="_blank">TREKK Peds DKA</a>
+        <a class="ref-link" href="https://www.bcchildrens.ca/endocrinology-diabetes-site/documents/dkaprotocol.pdf" target="_blank">BCCH DKA Protocol</a>
+      </div>
+    </div>
+
+    <!-- ══ CARDIAC ══ -->
+
+    <!-- Ventricular Arrhythmias -->
+    <div class="section theme-navy">
+      <div class="section-header"><span class="icon">📉</span>Ventricular Arrhythmias</div>
+      <div class="section-body">
+        <ul>
+          <li><strong>Pulseless VT/VF:</strong> Defibrillate → ACLS → amiodarone 300 mg IV</li>
+          <li><strong>Stable VT:</strong> Amiodarone 150 mg IV over 10 min → 1 mg/min × 6h → 0.5 mg/min</li>
+          <li>Procainamide 15–17 mg/kg IV load at 25–50 mg/min → infusion</li>
+          <li>Correct electrolytes (K⁺ &gt;4.0, Mg²⁺ &gt;0.9 mmol/L)</li>
+          <li>Torsades de Pointes: Mg²⁺ 2 g IV, stop QT-prolonging drugs</li>
+          <li>Electrical storm: amiodarone + beta blocker + call cardiology</li>
+        </ul>
+        <a class="ref-link" href="https://www.escardio.org/Guidelines/Clinical-Practice-Guidelines/Ventricular-Arrhythmias-and-the-Prevention-of-Sudden-Cardiac-Death" target="_blank">2022 ESC VA Guidelines</a>
+      </div>
+    </div>
+
+    <!-- Atrial Arrhythmias -->
+    <div class="section theme-navy">
+      <div class="section-header"><span class="icon">💓</span>Atrial Arrhythmias</div>
+      <div class="section-body">
+        <div class="cat-label">AF / A-Flutter</div>
+        <ul>
+          <li>Unstable → DC cardioversion immediately</li>
+          <li>Rate control: metoprolol 2.5–5 mg IV q5 min; diltiazem 0.25 mg/kg IV</li>
+          <li>Rhythm control (acute): amiodarone, ibutilide, or electrical cardioversion</li>
+          <li>AF &lt;48h: cardioversion generally safe; &gt;48h needs anticoagulation or TEE</li>
+          <li>Anticoagulate per CHA₂DS₂-VASc score</li>
+        </ul>
+        <a class="ref-link" href="https://www.escardio.org/Guidelines/Clinical-Practice-Guidelines/Atrial-Fibrillation-Management" target="_blank">2020 ESC AF Guidelines</a>
+      </div>
+    </div>
+
+    <!-- Digoxin Toxicity -->
+    <div class="section theme-navy">
+      <div class="section-header"><span class="icon">🌿</span>Digoxin Toxicity</div>
+      <div class="section-body">
+        <ul>
+          <li>Digoxin-specific antibody fragments (DigiFab): indicated for K⁺ &gt;5 mmol/L, haemodynamic instability, life-threatening arrhythmias</li>
+          <li>Acute OD: # vials = (mg ingested × 0.8) / 0.5, or empiric 10–20 vials</li>
+          <li>Chronic toxicity: 3–6 vials</li>
+          <li>Avoid calcium IV (may worsen toxicity)</li>
+          <li>Atropine for bradycardia; transient pacing if needed</li>
+        </ul>
+        <div class="pc-badge">☎ Poison Control</div><br>
+        <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/24195685/" target="_blank">DigiFab Dosing Reference</a>
+      </div>
+    </div>
+
+    <!-- DOAC Reversal – DTI -->
+    <div class="section theme-navy">
+      <div class="section-header"><span class="icon">🔄</span>DOAC Reversal — DTI (Dabigatran)</div>
+      <div class="section-body">
+        <ul>
+          <li>Idarucizumab (Praxbind) 5 g IV (2 × 2.5 g vials) — complete reversal</li>
+          <li>Indications: life-threatening bleeding, urgent surgery</li>
+          <li>Effect immediate and sustained ~24h</li>
+          <li>Hemodialysis removes dabigatran if antidote unavailable</li>
+          <li>Can restart anticoagulation as soon as clinically appropriate</li>
+        </ul>
+        <a class="ref-link" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4673419/" target="_blank">REVERSE-AD Trial</a>
+        <a class="ref-link" href="https://www.thrombosiscanada.ca/clinical_guides/" target="_blank">Thrombosis Canada</a>
+      </div>
+    </div>
+
+    <!-- DOAC Reversal – anti-Xa -->
+    <div class="section theme-navy">
+      <div class="section-header"><span class="icon">🔄</span>DOAC Reversal — Anti-Xa</div>
+      <div class="section-body">
+        <div class="cat-label">Apixaban, Edoxaban, Rivaroxaban</div>
+        <ul>
+          <li>Andexanet alfa (Ondexxya): low dose 400 mg IV bolus → 480 mg infusion; high dose 800 mg → 960 mg (rivaroxaban &gt;10 mg or apixaban &gt;5 mg)</li>
+          <li>4F-PCC (Octaplex/Beriplex) 25–50 units/kg IV: alternative if andexanet unavailable</li>
+          <li>Tranexamic acid adjunct for severe bleeding</li>
+          <li>Avoid FFP alone — insufficient anti-Xa reversal</li>
+        </ul>
+        <a class="ref-link" href="https://www.thrombosiscanada.ca/clinical_guides/" target="_blank">Thrombosis Canada</a>
+        <a class="ref-link" href="https://www.nejm.org/doi/full/10.1056/NEJMoa1706278" target="_blank">ANNEXA-4 Trial</a>
+      </div>
+    </div>
+
+    <!-- ══ NEUROLOGICAL ══ -->
+
+    <!-- Status Epilepticus -->
+    <div class="section theme-purple">
+      <div class="section-header"><span class="icon">🧠</span>Status Epilepticus</div>
+      <div class="section-body">
+        <ul>
+          <li><strong>0–5 min:</strong> ABC, O₂, IV access, glucose check; thiamine 100 mg IV if at risk</li>
+          <li><strong>5–20 min (Phase 1):</strong> Lorazepam 0.1 mg/kg IV (max 4 mg) or diazepam 0.15 mg/kg IV; midazolam 0.2 mg/kg IM if no IV access</li>
+          <li><strong>20–40 min (Phase 2):</strong> Fosphenytoin 20 PE/kg IV, or valproic acid 40 mg/kg IV, or levetiracetam 60 mg/kg IV (all max 4500 mg)</li>
+          <li><strong>&gt;40 min (Phase 3):</strong> Anaesthetic doses — propofol, midazolam, or pentobarbital infusion; ICU, EEG monitoring</li>
+        </ul>
+        <a class="ref-link" href="https://www.epilepsy.com/recognition/status-epilepticus" target="_blank">AES/Epilepsy Foundation 2016</a>
+      </div>
+    </div>
+
+    <!-- Angioedema -->
+    <div class="section theme-purple">
+      <div class="section-header"><span class="icon">😮</span>Angioedema</div>
+      <div class="section-body">
+        <div class="cat-label">Allergic vs HAE vs ACEi-induced</div>
+        <ul>
+          <li><strong>Allergic:</strong> Epinephrine 0.3–0.5 mg IM q5–15 min; antihistamines + steroids</li>
+          <li><strong>HAE (C1-INH deficiency):</strong> C1-INH concentrate (Berinert) 20 units/kg IV; or icatibant 30 mg SC; or ecallantide 30 mg SC</li>
+          <li><strong>ACEi-induced:</strong> Stop ACEi; icatibant 30 mg SC; FFP 2 units if refractory</li>
+          <li>Airway management is priority — intubate early if progressive</li>
+          <li>Antihistamines/steroids NOT effective in HAE</li>
+        </ul>
+        <a class="ref-link" href="https://www.worldallergy.org/education-and-programs/education/allergic-disease-resource-center/professionals/hereditary-angioedema" target="_blank">WAO HAE Guidelines</a>
+      </div>
+    </div>
+
+    <!-- Malignant Hyperthermia -->
+    <div class="section theme-purple">
+      <div class="section-header"><span class="icon">🌡️</span>Malignant Hyperthermia</div>
+      <div class="section-body">
+        <ul>
+          <li>Dantrolene 2.5 mg/kg IV bolus → repeat 1 mg/kg q5–10 min (max 10 mg/kg); then 1 mg/kg q6h × 24–48h</li>
+          <li>Stop triggering agents (volatile anaesthetics, succinylcholine) immediately</li>
+          <li>Active cooling (target &lt;38.5°C)</li>
+          <li>Correct acidosis, hyperkalemia, rhabdomyolysis</li>
+          <li>Call MHAUS hotline: 1-800-986-4287</li>
+        </ul>
+        <a class="ref-link" href="https://www.mhaus.org/healthcare-professionals/be-prepared/treatment-of-a-malignant-hyperthermia-crisis/" target="_blank">MHAUS Treatment Protocol</a>
+      </div>
+    </div>
+
+    <!-- Acute PE -->
+    <div class="section theme-slate">
+      <div class="section-header"><span class="icon">🫁</span>Acute Pulmonary Embolism</div>
+      <div class="section-body">
+        <div class="cat-label">Risk-Stratified Approach</div>
+        <ul>
+          <li><strong>High-risk (shock/arrest):</strong> Systemic thrombolysis — alteplase 100 mg IV over 2h (or 0.6 mg/kg over 15 min in arrest)</li>
+          <li><strong>Intermediate-high:</strong> Anticoagulation + monitor; consider PERT activation</li>
+          <li>Heparin: 80 units/kg bolus → 18 units/kg/hr (therapeutic range aPTT 60–100 s)</li>
+          <li>Catheter-directed thrombolysis or surgical embolectomy for refractory</li>
+        </ul>
+        <a class="ref-link" href="https://www.escardio.org/Guidelines/Clinical-Practice-Guidelines/Acute-Pulmonary-Embolism-Diagnosis-and-Management-of" target="_blank">2019 ESC PE Guidelines</a>
+      </div>
+    </div>
+
+    <!-- Valvular Heart Disease -->
+    <div class="section theme-slate wide">
+      <div class="section-header"><span class="icon">🫀</span>Acute Valvular Heart Disease (VHD)</div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;">
+        <div>
+          <div class="cat-label">Acute AR / Acute MR</div>
+          <ul>
+            <li>Vasodilators: nitroprusside, nitroglycerin (reduce afterload)</li>
+            <li>Inotropes: dobutamine / dopamine if hypotensive</li>
+            <li>IABP contraindicated in AR; may be used in MR as bridge</li>
+            <li>Urgent surgery: definitive for acute AR &amp; primary acute MR</li>
+          </ul>
+        </div>
+        <div>
+          <div class="cat-label">Acute AS / Acute MS</div>
+          <ul>
+            <li>AS: avoid aggressive vasodilation; volume cautiously; urgent TAVI/SAVR</li>
+            <li>MS: rate control (beta blocker / CCB), diuresis, urgent BMV if severe</li>
+            <li>All acute VHD → early Heart Team discussion</li>
+            <li>MCS as bridge to definitive intervention if haemodynamically unstable</li>
+          </ul>
+        </div>
+        <div style="grid-column:span 2;margin-top:3px;">
+          <a class="ref-link" href="https://www.escardio.org/Guidelines/Clinical-Practice-Guidelines/Valvular-Heart-Disease-Management-of" target="_blank">2025 ESC/EACTS VHD Guidelines</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- IV Compatibility -->
+    <div class="section theme-green">
+      <div class="section-header"><span class="icon">💉</span>IV Compatibility Resources</div>
+      <div class="section-body">
+        <ul>
+          <li>Use Micromedex IV Compatibility or Clinical Pharmacology</li>
+          <li>King Guide: primary reference for admixture compatibility</li>
+          <li>Verify concentration, diluent, container, and infusion duration</li>
+          <li>Y-site compatibility ≠ admixture compatibility</li>
+        </ul>
+        <a class="ref-link" href="https://www.micromedexsolutions.com/" target="_blank">Micromedex</a>
+        <a class="ref-link" href="https://stabilis.eu/" target="_blank">Stabilis.eu</a>
+        <a class="ref-link" href="https://www.kingguideonline.com/" target="_blank">King Guide</a>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span><strong>BB</strong> = Beta Blocker</span>
+    <span><strong>CCB</strong> = Calcium Channel Blocker</span>
+    <span><strong>DKA</strong> = Diabetic Ketoacidosis</span>
+    <span><strong>HHS</strong> = Hyperosmolar Hyperglycaemic State</span>
+    <span><strong>DOAC</strong> = Direct Oral Anticoagulant</span>
+    <span><strong>DTI</strong> = Direct Thrombin Inhibitor</span>
+    <span><strong>NAC</strong> = N-Acetylcysteine</span>
+    <span><strong>4F-PCC</strong> = 4-Factor Prothrombin Complex Concentrate</span>
+    <span><strong>HAE</strong> = Hereditary Angioedema</span>
+    <span><strong>PE</strong> = Pulmonary Embolism</span>
+    <span><strong>VT/VF</strong> = Ventricular Tachycardia / Fibrillation</span>
+    <span><strong>BMV</strong> = Balloon Mitral Valvuloplasty</span>
+    <div class="footer-note">
+      ⚠ This is a high-level reference only. Not a substitute for full clinical review, local protocols, or specialist consultation. All overdoses requiring antidote management must involve Poison Control. Drug doses must be verified against current monographs and individual patient factors.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
